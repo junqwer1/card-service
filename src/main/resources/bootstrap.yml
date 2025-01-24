@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: card-service
+
+  cloud:
+    config:
+      uri: ${config.server}
