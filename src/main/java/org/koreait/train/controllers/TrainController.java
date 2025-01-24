@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.koreait.train.entities.TrainData;
 import org.koreait.train.services.PredictService;
 import org.koreait.train.services.TrainService;
+import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Profile("ml")
 @RestController
 @RequiredArgsConstructor
 public class TrainController {
