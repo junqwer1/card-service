@@ -3,8 +3,6 @@ package org.koreait.global.libs;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.koreait.global.entities.CodeValue;
-import org.koreait.global.repositories.CodeValueRepository;
 import org.koreait.member.MemberUtil;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
@@ -28,7 +26,6 @@ public class Utils {
     private final HttpServletRequest request;
     private final MessageSource messageSource;
     private final DiscoveryClient discoveryClient;
-    private final CodeValueRepository codeValueRepository;
     private final MemberUtil memberUtil;
 
     /**
@@ -138,57 +135,6 @@ public class Utils {
         int port = request.getServerPort();
         String _port = port == 80 || port == 443 ? "" : ":" + port;
         return String.format("%s://%s%s%s%s", request.getScheme(), request.getServerName(), _port, request.getContextPath(), url);
-    }
-
-    /**
-     * Code - Value 레디스 저장소 저장
-     *
-     * @param code
-     * @param value
-     */
-    public void saveValue(String code, Object value) {
-        CodeValue item = new CodeValue();
-        item.setCode(code);
-        item.setValue(value);
-
-        codeValueRepository.save(item);
-    }
-
-    /**
-     * code 값으로 value값 조회
-     *
-     * @param code
-     * @return
-     * @param <T>
-     */
-    public <T> T getValue(String code) {
-        CodeValue item = codeValueRepository.findByCode(code);
-
-        return item == null ? null : (T)item.getValue();
-    }
-
-    /**
-     * 저장된 값 code로 삭제
-     *
-     * @param code
-     */
-    public void deleteValue(String code) {
-        codeValueRepository.deleteById(code);
-    }
-
-    public String getUserHash() {
-        String userKey = "" + Objects.hash("userHash");
-
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals(userKey)) {
-                    return cookie.getValue();
-                }
-            }
-        }
-
-        return "";
     }
 
     public boolean isMobile() {
